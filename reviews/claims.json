@@ -1,0 +1,292 @@
+{
+  "source_commit": "4eaee87548250b2682affda7d05d947c05554bae",
+  "updated": "2026-11-02",
+  "scope": "AI-assisted reconstruction; no independent human or formal certification",
+  "claims": [
+    {
+      "id": "SEP",
+      "claim": "Separation for the specified complex packets",
+      "status": "source-obligation",
+      "depends_on": [],
+      "sources": [
+        {
+          "id": "separation",
+          "line": 1
+        }
+      ],
+      "notes": [
+        "notes/04-retestability-audit.md"
+      ]
+    },
+    {
+      "id": "CALC",
+      "claim": "Differential and regular implicit packet calculus",
+      "status": "source-obligation",
+      "depends_on": [
+        "SEP"
+      ],
+      "sources": [
+        {
+          "id": "calculus",
+          "line": 1
+        }
+      ],
+      "notes": [
+        "notes/04-retestability-audit.md"
+      ]
+    },
+    {
+      "id": "PRIM",
+      "claim": "Primitive estimates and terminal-germ retestability",
+      "status": "source-obligation",
+      "depends_on": [
+        "SEP",
+        "CALC"
+      ],
+      "sources": [
+        {
+          "id": "additive",
+          "line": 1713
+        },
+        {
+          "id": "regular",
+          "line": 643
+        },
+        {
+          "id": "mixed",
+          "line": 1381
+        }
+      ],
+      "notes": [
+        "notes/04-retestability-audit.md"
+      ]
+    },
+    {
+      "id": "ELIM",
+      "claim": "Exact-hit elimination and absolute-zero criterion",
+      "status": "source-obligation",
+      "depends_on": [
+        "SEP",
+        "CALC",
+        "PRIM"
+      ],
+      "sources": [
+        {
+          "id": "elimination",
+          "line": 618
+        },
+        {
+          "id": "elimination",
+          "line": 1038
+        }
+      ],
+      "notes": [
+        "notes/04-retestability-audit.md"
+      ]
+    },
+    {
+      "id": "GEO",
+      "claim": "Finite geometric templates before sequence selection",
+      "status": "source-obligation",
+      "depends_on": [],
+      "sources": [
+        {
+          "id": "subdivision",
+          "line": 346
+        },
+        {
+          "id": "subdivision",
+          "line": 597
+        },
+        {
+          "id": "subdivision",
+          "line": 746
+        }
+      ],
+      "notes": [
+        "notes/00-proof-map.md"
+      ]
+    },
+    {
+      "id": "TERM",
+      "claim": "Terminal identities, independent arguments and boundary corners",
+      "status": "source-obligation",
+      "depends_on": [
+        "GEO",
+        "PRIM"
+      ],
+      "sources": [
+        {
+          "id": "terminal",
+          "line": 1
+        },
+        {
+          "id": "terminal",
+          "line": 948
+        }
+      ],
+      "notes": [
+        "notes/03-closure-contracts.md"
+      ]
+    },
+    {
+      "id": "GRAPH",
+      "claim": "Regular graph and jet lifting with denominator restrictions",
+      "status": "mechanism-checked",
+      "depends_on": [],
+      "sources": [
+        {
+          "id": "counting",
+          "line": 551
+        },
+        {
+          "id": "counting",
+          "line": 611
+        },
+        {
+          "id": "counting",
+          "line": 669
+        }
+      ],
+      "notes": [
+        "notes/03-closure-contracts.md"
+      ]
+    },
+    {
+      "id": "CLOS",
+      "claim": "Absolute finiteness of every fixed generated matching system",
+      "status": "source-obligation",
+      "depends_on": [
+        "ELIM",
+        "TERM",
+        "GRAPH"
+      ],
+      "sources": [
+        {
+          "id": "counting",
+          "line": 705
+        },
+        {
+          "id": "counting",
+          "line": 864
+        }
+      ],
+      "notes": [
+        "notes/03-closure-contracts.md",
+        "notes/04-retestability-audit.md"
+      ]
+    },
+    {
+      "id": "MATCH",
+      "claim": "Rank and injection of represented hyperbolic cycles into components",
+      "status": "mechanism-checked",
+      "depends_on": [
+        "GEO",
+        "TERM"
+      ],
+      "sources": [
+        {
+          "id": "counting",
+          "line": 445
+        },
+        {
+          "id": "counting",
+          "line": 500
+        }
+      ],
+      "notes": [
+        "notes/03-closure-contracts.md"
+      ]
+    },
+    {
+      "id": "UNI",
+      "claim": "Absolute closure finiteness implies uniform fiber component bounds",
+      "status": "reconstructed-conditional",
+      "depends_on": [],
+      "sources": [
+        {
+          "id": "counting",
+          "line": 22
+        },
+        {
+          "id": "counting",
+          "line": 64
+        }
+      ],
+      "notes": [
+        "manuscript/uniformity.tex",
+        "notes/02-uniformity-guide.zh-CN.md"
+      ]
+    },
+    {
+      "id": "HYP",
+      "claim": "Uniform hyperbolic count in a fixed square",
+      "status": "conditional-assembly",
+      "depends_on": [
+        "GEO",
+        "CLOS",
+        "MATCH",
+        "UNI"
+      ],
+      "sources": [
+        {
+          "id": "counting",
+          "line": 1002
+        }
+      ],
+      "notes": [
+        "notes/00-proof-map.md"
+      ]
+    },
+    {
+      "id": "ROT",
+      "claim": "Signed rotation realizes any finite count by hyperbolic cycles",
+      "status": "reconstructed-conditional",
+      "depends_on": [],
+      "sources": [
+        {
+          "id": "counting",
+          "line": 939
+        }
+      ],
+      "notes": [
+        "notes/05-geometric-reductions.md"
+      ]
+    },
+    {
+      "id": "SCALE",
+      "claim": "Affine scaling and finite-witness reduction to the whole plane",
+      "status": "reconstructed-conditional",
+      "depends_on": [
+        "HYP",
+        "ROT"
+      ],
+      "sources": [
+        {
+          "id": "counting",
+          "line": 1020
+        }
+      ],
+      "notes": [
+        "notes/05-geometric-reductions.md"
+      ]
+    },
+    {
+      "id": "TARGET",
+      "claim": "Degree-only bound for all isolated periodic orbits",
+      "status": "conditional-assembly",
+      "depends_on": [
+        "SCALE"
+      ],
+      "sources": [
+        {
+          "id": "introduction",
+          "line": 12
+        }
+      ],
+      "notes": [
+        "notes/00-proof-map.md"
+      ]
+    }
+  ]
+}
