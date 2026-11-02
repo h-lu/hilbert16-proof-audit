@@ -1,0 +1,11 @@
+.cache/
+__pycache__/
+*.pyc
+manuscript/*.aux
+manuscript/*.log
+manuscript/*.out
+manuscript/*.toc
+manuscript/*.fls
+manuscript/*.fdb_latexmk
+manuscript/*.synctex.gz
+.DS_Store

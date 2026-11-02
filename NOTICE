@@ -1,0 +1,16 @@
+Hilbert 16: a proof audit and reconstruction
+Copyright 2026 Hilbert16 Proof Audit contributors
+
+This independent research repository studies:
+OpenAI, Uniform bounds for planar polynomial limit cycles (September 24, 2026),
+from https://github.com/openai/math,
+at commit 4eaee87548250b2682affda7d05d947c05554bae.
+The source repository is distributed under the Apache License, Version 2.0.
+
+The exposition and alternative organization here are research notes, not an
+endorsement by OpenAI. The initial drafting and review were AI-assisted.
+The general Hilbert bound has not been independently certified by this project.
+
+Linked external articles retain their own copyright and license terms.
+Upstream manuscript files downloaded for review are stored in an ignored cache;
+their authorship and licenses are not changed by the download tool.
