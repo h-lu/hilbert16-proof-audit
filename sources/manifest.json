@@ -1,0 +1,118 @@
+{
+  "repository": "openai/math",
+  "commit": "4eaee87548250b2682affda7d05d947c05554bae",
+  "recorded": "2026-11-02",
+  "files": [
+    {
+      "id": "introduction",
+      "path": "preprints/uniform-bounds-for-planar-polynomial-limit-cycles-September-24-2026/build/sections/01-introduction.tex",
+      "sha256": "d075ec950d5df9c5cefd3c09a1fd97c015116a253f0f5df0a713c6de38fb137b",
+      "bytes": 14646,
+      "lines": 284
+    },
+    {
+      "id": "flags",
+      "path": "preprints/uniform-bounds-for-planar-polynomial-limit-cycles-September-24-2026/build/sections/02-flags.tex",
+      "sha256": "22abc055158cf24f1a3ad703f6bc0c5b8ad669d47fc67ecab6b5ecbabac6d46b",
+      "bytes": 41516,
+      "lines": 917
+    },
+    {
+      "id": "separation",
+      "path": "preprints/uniform-bounds-for-planar-polynomial-limit-cycles-September-24-2026/build/sections/03-separation.tex",
+      "sha256": "7d023134f2936cea6ed10cb12b1b91ead15fcb1cb035b78148a9ac2e27142bf6",
+      "bytes": 64693,
+      "lines": 1428
+    },
+    {
+      "id": "calculus",
+      "path": "preprints/uniform-bounds-for-planar-polynomial-limit-cycles-September-24-2026/build/sections/04-calculus.tex",
+      "sha256": "8db92ef324b35ab3d41c3d3388b6f55c50e3c0c62e202c7685980a4c935355f6",
+      "bytes": 61046,
+      "lines": 1144
+    },
+    {
+      "id": "elimination",
+      "path": "preprints/uniform-bounds-for-planar-polynomial-limit-cycles-September-24-2026/build/sections/05-elimination.tex",
+      "sha256": "35381ec6805eb3a1c93d1ead461eabc3695abbaf39239f3fb9b31a7ab09c2672",
+      "bytes": 61828,
+      "lines": 1147
+    },
+    {
+      "id": "additive",
+      "path": "preprints/uniform-bounds-for-planar-polynomial-limit-cycles-September-24-2026/build/sections/06-additive.tex",
+      "sha256": "196c8ddfae78b04c789eb93639a5a3cb807b97d024d2ee8fe80579a9256561b5",
+      "bytes": 90484,
+      "lines": 1748
+    },
+    {
+      "id": "regular",
+      "path": "preprints/uniform-bounds-for-planar-polynomial-limit-cycles-September-24-2026/build/sections/07-regular.tex",
+      "sha256": "5aa423ec9541e25081471470587b2046b4d88c7e1cfe5ef2c36c8d405cf655bf",
+      "bytes": 34161,
+      "lines": 679
+    },
+    {
+      "id": "mixed",
+      "path": "preprints/uniform-bounds-for-planar-polynomial-limit-cycles-September-24-2026/build/sections/08-mixed.tex",
+      "sha256": "fe30b8cc2ab4573fca19d0ca1e0a2040d1dde6a3d630cc7af40803e437d3d2f1",
+      "bytes": 77244,
+      "lines": 1561
+    },
+    {
+      "id": "subdivision",
+      "path": "preprints/uniform-bounds-for-planar-polynomial-limit-cycles-September-24-2026/build/sections/09-subdivision.tex",
+      "sha256": "30d3a8514b2c8d4932176d6cc953e0863d4d2b81fd4e1af316e4a0116a83f812",
+      "bytes": 39997,
+      "lines": 795
+    },
+    {
+      "id": "terminal",
+      "path": "preprints/uniform-bounds-for-planar-polynomial-limit-cycles-September-24-2026/build/sections/10-terminal.tex",
+      "sha256": "400a4062ff0b9ba1cd18f2970b532ffc10ad04d784d3c9e8498fc49282c63cac",
+      "bytes": 60218,
+      "lines": 1201
+    },
+    {
+      "id": "counting",
+      "path": "preprints/uniform-bounds-for-planar-polynomial-limit-cycles-September-24-2026/build/sections/11-counting.tex",
+      "sha256": "9117c4eb330a50c7125b5c92dc53cbb227b87ef390188c6992d064bec828b20f",
+      "bytes": 53721,
+      "lines": 1032
+    },
+    {
+      "id": "main",
+      "path": "preprints/uniform-bounds-for-planar-polynomial-limit-cycles-September-24-2026/build/main.tex",
+      "sha256": "431e23dbc4b2802786c4c0039f12bb426b4219f1b5c2ad571181696f674ecb2f",
+      "bytes": 1713,
+      "lines": 47
+    },
+    {
+      "id": "macros",
+      "path": "preprints/uniform-bounds-for-planar-polynomial-limit-cycles-September-24-2026/build/macros.tex",
+      "sha256": "6c85fb35153627476bb838e0b1fd9e52bfc76ae2184b6de61869c9949f152195",
+      "bytes": 818,
+      "lines": 24
+    },
+    {
+      "id": "references",
+      "path": "preprints/uniform-bounds-for-planar-polynomial-limit-cycles-September-24-2026/build/references/references.bib",
+      "sha256": "8ffd4726b1dfbe400647f4daa7c75f0ecc6ddd8bd712092d976dc4a121c979b7",
+      "bytes": 7767,
+      "lines": 253
+    },
+    {
+      "id": "lean-scope",
+      "path": "lean/docs/143.md",
+      "sha256": "eba1a207ef82be58eaf4ad9f6f1bfa1f49fda20099a2145f43144188c8344161",
+      "bytes": 925,
+      "lines": 15
+    },
+    {
+      "id": "paper",
+      "path": "preprints/uniform-bounds-for-planar-polynomial-limit-cycles-September-24-2026/uniform-bounds-for-planar-polynomial-limit-cycles-September-24-2026.pdf",
+      "sha256": "8ff8e55372a94e4f494f3412539a3dfb05cb7f36b66e7b94d9be8f99603fbe89",
+      "bytes": 1291731
+    }
+  ]
+}

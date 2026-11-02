@@ -1,0 +1,23 @@
+# Mathematical cross-review — 2 November 2026
+
+**Reviewer:** Codex AI reviewer, closure and geometric-reduction subtask. This is a separate AI reading within the same research session, not independent human peer review or formal verification.
+
+**Scope:** The complete [conditional uniformity manuscript](../manuscript/uniformity.tex), from its definitions through both counterexamples and its comparison with the source. The claim under review is **UNI** in the [claim ledger](claims.json): full finite generated-closure isolated-zero finiteness, positive-margin completeness, and regularity imply a uniform bound on the connected components of parameter fibers. The source comparison concerns Definition 11.1 and Theorem 11.2, `11-counting.tex`, lines 22–217, at source commit `4eaee87548250b2682affda7d05d947c05554bae`, recorded in the [source manifest](../sources/manifest.json).
+
+**Method and result:** Read the proof in full and reconstructed the logical dependencies, dimension counts, derivative calculation, and counterexamples. No gap was found in this conditional implication during this review. This finding does not establish the assumptions for the source's matching systems or the validity of the general Hilbert-sixteenth claim.
+
+The following steps were checked:
+
+- **Hypothesis inheritance and the proper barrier:** New coordinates and retained strict margins preserve positive-margin completeness. Every finite descendant of a descendant is still a finite descendant of the original data. The inverse-margin barrier has compact sublevels, including after a fixed linear tilt, so every nonempty component supplies a minimum.
+- **Bordered Jacobian and generic tilt:** The multiplier is unique at a constrained critical point. The bordered matrix is invertible exactly when the constrained Hessian is nondegenerate. The Sard map has equal source and target dimensions, and second countability permits one tilt for countably many complete witness manifolds.
+- **Square-system induction:** The varying parameter is globally injective on each connected solution curve, using the classification of one-dimensional manifolds and its nonvanishing derivative. All witnesses are chosen before the common tilt. The resulting single multiplier system has one fewer parameter, retains the original equations, and has its Jacobian determinant recorded as a margin. The induction is simultaneous over unknown dimensions, so the extra multiplier variables do not invalidate it.
+- **Positive-dimensional fibers and quantifiers:** The square theorem has already been proved for every parameter dimension when it is applied to the regular multiplier system. The argument is noncircular. A tilt-dependent bound for one fixed system is enough to contradict the countably many witnesses; no uniform bound across all descendants or all possible tilts is assumed.
+- **Counterexamples:** Example A satisfies regularity and positive-margin completeness while a simple descendant has infinitely many isolated zeros. In Example B, every generated expression is rational; after clearing denominators, an open restriction cannot create a new isolated algebraic zero. Its missing boundary margins nevertheless allow infinitely many fiber components. Both examples establish the advertised necessity of the respective hypotheses.
+
+**Editorial finding:** Example B's initial heading, “the full generated closure is finite,” was ambiguous: the closure is an infinite collection of systems. The intended property is finiteness of isolated solutions for every fixed descendant. The body already stated this correctly. The publication pass corrected the heading to “isolated-zero finiteness without boundary completeness.”
+
+**Accepted background:** The implicit function and regular-level-set theorems, Sard's theorem, the classification of connected one-dimensional manifolds without boundary, and finiteness of the connected components of a real algebraic set. These background results were used, not independently reproved or formally checked here.
+
+**Outside this review's verified scope:** The finite geometric template construction; the primitive flow estimates and boundary extensions; packet separation, calculus, and retestability; and the full isolated-zero property for every required generated matching system. The [closure contracts](../notes/03-closure-contracts.md) and [retestability audit](../notes/04-retestability-audit.md) distinguish local mechanisms from these unresolved source obligations. The [geometric reductions](../notes/05-geometric-reductions.md) are separate conditional arguments. This review makes no claim about a Lean proof of the general theorem.
+
+Signed: **Codex AI reviewer**, 2026-11-02.

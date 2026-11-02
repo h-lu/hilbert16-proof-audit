@@ -1,0 +1,929 @@
+\documentclass[11pt]{article}
+\usepackage[T1]{fontenc}
+\usepackage[utf8]{inputenc}
+\usepackage[margin=1in]{geometry}
+\usepackage{amsmath,amssymb,amsthm}
+\usepackage{enumitem}
+\usepackage{booktabs,array}
+\usepackage[colorlinks=true,linkcolor=blue,citecolor=blue,urlcolor=blue]{hyperref}
+\usepackage{microtype}
+\newtheorem{theorem}{Theorem}[section]
+\newtheorem{lemma}[theorem]{Lemma}
+\newtheorem{proposition}[theorem]{Proposition}
+\newtheorem{corollary}[theorem]{Corollary}
+\theoremstyle{definition}
+\newtheorem{definition}[theorem]{Definition}
+\theoremstyle{remark}
+\newtheorem{remark}[theorem]{Remark}
+\newcommand{\R}{\mathbb R}
+\newcommand{\AZ}{\mathrm{AZ}}
+\newcommand{\rank}{\operatorname{rank}}
+\newcommand{\im}{\operatorname{im}}
+\newcommand{\sourcecommit}{\texttt{4eaee87548250b2682affda7d05d947c05554bae}}
+\title{From Absolute Isolated-Zero Finiteness\\
+to Uniform Bounds on Regular Fibers}
+\author{Hilbert 16 Proof Audit project\\
+\small AI-assisted mathematical exposition; independent review invited}
+\date{2 November 2026}
+\hypersetup{
+ pdftitle={From Absolute Isolated-Zero Finiteness to Uniform Bounds on Regular Fibers},
+ pdfauthor={Hilbert 16 Proof Audit project}}
+
+\begin{document}
+\maketitle
+
+\begin{abstract}
+We give a detailed conditional proof of the projection-counting principle
+used in Section 11 of OpenAI's manuscript \emph{Uniform bounds for planar
+polynomial limit cycles}. The hypotheses require a boundary-complete
+finite list of domain margins and finiteness of the isolated solutions
+of every fixed system in a specified differential and algebraic closure.
+Under these hypotheses, a regular parameterized equation system has a
+uniform bound on the number of connected components of its fibers.
+The proof uses a proper function, generic linear perturbations, and
+induction on the parameter dimension. A single perturbation is chosen
+for a countable collection of witness fibers, avoiding both Fubini's
+theorem and a separate argument at exceptional parameters. We spell out
+the closure inheritance and the Jacobian calculation. Two counterexamples
+show why neither finiteness for the original total zero set nor
+finiteness for the full closure without boundary completeness suffices.
+This note audits one conditional implication; it does not establish the
+analytic hypotheses for polynomial-flow matching systems or certify
+the full Hilbert-sixteenth manuscript.
+\end{abstract}
+
+{\small\tableofcontents}
+\clearpage
+
+\section{Scope, provenance, and the logical target}
+\label{sec:scope}
+
+The target is the implication
+\[
+ \begin{gathered}
+ \text{absolute isolated-zero finiteness for a full finite closure}\\
+ \Downarrow\\
+ \text{uniform component bounds for regular fibers}.
+ \end{gathered}
+\]
+It is Theorem 11.2 in the source manuscript \cite{OpenAI}, with its
+hypotheses in Definition 11.1. We work from the public repository at the
+fixed revision
+\[
+ \sourcecommit.
+\]
+The relevant source is
+\href{https://github.com/openai/math/blob/4eaee87548250b2682affda7d05d947c05554bae/preprints/uniform-bounds-for-planar-polynomial-limit-cycles-September-24-2026/build/sections/11-counting.tex}{\texttt{build/sections/11-counting.tex}},
+lines 22--217 at this revision. Pinning a revision records what is being
+discussed; it is not a statement that other parts of that revision have
+been checked.
+
+The source uses a generic tilt for almost every parameter slice and then
+extends the bound to exceptional parameters. The proof below has a
+different organization. If the desired bound fails, choose a
+\emph{countable} sequence of witness fibers. Sard's theorem allows one
+tilt that is good on every member of this sequence. This is enough for
+the contradiction and removes the exceptional-parameter step.
+
+All mathematical arguments in this note are supplied for examination.
+This document is AI-assisted, has not received a recorded independent
+human referee report, and is not a formal proof-assistant certificate.
+It makes no claim that the full Hilbert-sixteenth proof has been
+verified. In particular, the source's Theorem 11.4, which asserts that
+the required matching systems satisfy the closure hypothesis, is
+\emph{not} an input proved here.
+
+We use the following standard background facts:
+\begin{enumerate}[label=(\roman*),leftmargin=*]
+\item the implicit function theorem and the regular-level-set theorem;
+\item Sard's theorem for smooth maps between finite-dimensional
+second-countable manifolds;
+\item the classification of connected one-dimensional manifolds without
+boundary as circles or open intervals, up to diffeomorphism.
+\end{enumerate}
+These are background tools, not additional results about polynomial
+flows. The final counterexample also uses the standard fact that a real
+algebraic set has finitely many connected components. Sard's original
+paper is listed in the references; conventional background sources
+are listed for the manifold and semialgebraic facts
+\cite{Sard,Lee,BCR}. No particular textbook theorem number is used.
+
+\section{The hypotheses, with domains retained}
+\label{sec:hypotheses}
+
+Write the coordinates as
+\[
+ (p,x)\in\R^a\times\R^n.
+\]
+The letters \(p\) and \(x\) indicate their roles in a projection. They
+do not indicate different kinds of analytic variables. In an absolute
+zero test, the remaining parameter coordinates are also unknowns.
+
+\begin{definition}[Open data and boundary-complete margins]
+\label{def:data}
+An open analytic datum consists of an open set
+\(U\subset\R^a\times\R^n\), a real analytic map
+\(F:U\to\R^m\), and a finite list of real analytic functions
+\[
+ g_1,\ldots,g_s:U\longrightarrow(0,\infty).
+\]
+The list is \emph{boundary-complete}, or satisfies
+\emph{positive-margin completeness}, if the following holds:
+whenever \(z_\nu\in U\) converges to a finite point \(z_*\) and
+\[
+ \inf_\nu g_j(z_\nu)>0\qquad(1\le j\le s),
+\]
+then \(z_*\in U\).
+The equations are \(F=0\); the margins record its original open
+restrictions, including coordinate-chart boundaries.
+\end{definition}
+
+Boundary completeness means precisely this sequential condition.
+No compactness of \(U\), nor extension of \(F\) across a vanishing
+margin, is assumed. A restriction \(h\ne0\) is recorded by the
+positive margin \(h^2\). Empty zero sets and empty domains are allowed.
+
+\begin{definition}[Finite generated closure]
+\label{def:closure}
+Starting from the coordinate functions, \(F_i\), \(g_j\), and fixed
+real constants, permit the following finite operations:
+\begin{enumerate}[label=(\alph*),leftmargin=*]
+\item introduce finitely many additional independent real coordinates,
+pulling back the old functions to the resulting product domain;
+\item form finite sums and products, and take finitely many partial
+derivatives in independent coordinates;
+\item invert a generated function \(h\) on a domain where \(h\ne0\),
+retaining that restriction as a margin;
+\item append finitely many equations and positive margins made from
+generated functions, while retaining every earlier equation and open
+restriction.
+\end{enumerate}
+Coordinates may be regrouped as parameters and unknowns. Fixed real
+values may be assigned to coordinates; equivalently, one retains those
+coordinates and appends equations \(z_i=c_i\). Clearing a denominator
+is permitted only while retaining the corresponding nonzero condition.
+
+A \emph{descendant system} is any system obtained by finitely many such
+operations, possibly repeated. Adjoining an arbitrary new analytic
+function is not an allowed operation. Any analytic graph ties needed
+in an application must already be among the data or be obtained by
+the stated operations.
+\end{definition}
+
+Every particular descendant has finitely many coordinates, equations,
+and margins. There is no common upper bound on their numbers or on the
+derivative orders as the descendant varies. Fixed real constants are
+unrestricted: the generic tilts selected below are allowed constants.
+
+To avoid ambiguity about specialization, a partial derivative is taken
+in an ambient independent coordinate before imposing an equation
+fixing that coordinate. Retaining the fixing equation gives the same
+solution set as eliminating the fixed coordinate, and preserves
+isolation.
+
+\begin{definition}[Absolute isolated-zero property for the closure]
+\label{def:az}
+The datum has property \(\AZ\) if, for every fixed descendant system,
+its solution set has finitely many isolated points in its specified
+open domain when \emph{all remaining coordinates} are treated as
+unknowns. An isolated solution is isolated in the total solution set,
+including all auxiliary coordinates and all retained equations.
+\end{definition}
+
+The quantifiers in this property are
+\[
+ \forall\text{ fixed finite descendants }E,\qquad
+ \#\{\text{isolated total solutions of }E\}<\infty.
+\]
+There is no number required to work simultaneously for all \(E\).
+The theorem will infer a uniform bound over \(p\) for \emph{one fixed
+original system}. These are different assertions.
+
+\begin{lemma}[Inheritance of the hypotheses]
+\label{lem:inheritance}
+Boundary completeness is preserved by introducing independent
+coordinates, by a finite succession of generated strict restrictions
+with their margins retained, and by taking fixed-coordinate slices.
+Property \(\AZ\) is inherited by every descendant, with respect to
+its own finite generated closure.
+\end{lemma}
+
+\begin{proof}
+For additional coordinates, a convergent sequence projects to a
+convergent sequence in the old domain. The original margins put the
+limit in that domain, and the new coordinates have their given finite
+limits. For a new condition \(h>0\), a positive lower bound on its
+margin implies \(h(z_*)>0\) by continuity after the old domain has been
+recovered. For \(h\ne0\), use the margin \(h^2\). Each new function is
+analytic on the domain already constructed, so this argument applies
+one stage at a time, including inverses.
+
+For a slice obtained by fixing coordinates, append their fixed values
+to the convergent sequence of the remaining coordinates. Apply the old
+completeness condition and then take the slice again.
+
+Finally, a finite sequence of permitted operations on a descendant is
+still a finite sequence of permitted operations on the original datum.
+All original equations and restrictions remain present. Thus the
+absolute zero assertion for the original closure includes every system
+in the descendant's closure.
+\end{proof}
+
+\section{The conditional uniformity theorem}
+\label{sec:theorem}
+
+\begin{theorem}[Uniform regular-fiber bound]
+\label{thm:uniform}
+Let \((U,F,g)\) satisfy Definitions \ref{def:data}--\ref{def:az}, with
+\(0\le m\le n\). Suppose that
+\[
+ \rank F_x(p,x)=m
+ \quad\text{at every }(p,x)\in U\text{ with }F(p,x)=0.
+\]
+Then there is a finite nonnegative integer \(N\), depending on this
+fixed datum, such that every fiber
+\[
+ M_p=\{x:(p,x)\in U,\ F(p,x)=0\}
+\]
+has at most \(N\) connected components. If \(m=n\), every fiber has
+at most \(N\) points.
+\end{theorem}
+
+For \(m=n\), the regular-level-set theorem makes each fiber discrete.
+For \(m<n\), the fibers are smooth manifolds of dimension \(n-m\);
+they need not be compact or connected. The theorem gives no effective
+formula for \(N\). It makes no assertion about singular fibers in
+which the displayed rank condition fails.
+
+One can apply the theorem separately on the finitely many charts
+specified by a nonzero \(m\times m\) minor of \(F_x\). The square of
+the chosen minor is an additional margin. A connected component of
+one chart's fiber belongs to only one component of the original
+fiber, so summing the bounds for a finite covering bounds the original
+components. Such a reduction is useful in applications; it does not
+permit an infinite collection of charts.
+
+The proof needs two mechanisms. A proper function gives a critical
+point on every component. A common generic linear tilt makes those
+critical points regular solutions of a finite multiplier system.
+In the square case, allowing one parameter to vary first reduces the
+number of parameters in that multiplier system.
+
+\section{Proper functions and regular critical-point systems}
+\label{sec:tools}
+
+\subsection{A proper function from the margins}
+
+\begin{lemma}[Proper barrier]
+\label{lem:proper}
+For boundary-complete open data define
+\begin{equation}
+ \rho(p,x)=1+|p|^2+|x|^2+\sum_{j=1}^s g_j(p,x)^{-2}.
+ \label{eq:rho}
+\end{equation}
+On the equation locus, and on any fixed-coordinate slice of that
+locus, \(\rho\) has compact sublevel sets. If \(z\) denotes the varying
+coordinates of a slice, then for every fixed vector \(\ell\) the
+function \(\rho+\ell\cdot z\) also has compact sublevel sets and is
+bounded below. Its restriction to every nonempty connected component
+of that slice attains a minimum.
+\end{lemma}
+
+\begin{proof}
+A sublevel \(\rho\le C\) bounds all coordinates and gives
+\(g_j\ge C^{-1/2}\) whenever the sublevel is nonempty. A sequence in
+that sublevel has a convergent subsequence. Boundary completeness puts
+its limit back in \(U\), and continuity preserves \(F=0\), the fixed
+coordinates, and the sublevel inequality. The sublevel is therefore
+compact in the ambient Euclidean space.
+
+For a linear tilt, use
+\[
+ |z|^2+\ell\cdot z
+ \ge \frac12|z|^2-\frac12|\ell|^2.
+\]
+All inverse-margin terms remain nonnegative. A tilted sublevel thus
+still bounds the varying coordinates and keeps every margin bounded
+away from zero. The fixed coordinates are constants, so the same
+compactness argument applies. The inequality also gives a lower bound.
+
+Let \(C_0\) be a nonempty connected component of a slice and choose
+\(z_0\in C_0\). Components are closed in that slice. Intersecting \(C_0\)
+with the compact sublevel at the value of \(z_0\) gives a nonempty
+compact set on which the function attains a minimum. This minimum is
+also the minimum on \(C_0\).
+\end{proof}
+
+All functions used in \eqref{eq:rho} belong to the generated closure.
+At a later induction stage, the barrier is rebuilt using the squares
+of \emph{all} coordinates then present, including multipliers, and the
+inverse squares of all retained margins. Reusing a barrier that omitted
+new unbounded coordinates would not establish the needed properness.
+
+\subsection{The bordered Jacobian}
+
+Let \(W\subset\R^q\) be open, let \(G:W\to\R^r\) be smooth, and
+suppose \(DG\) has row rank \(r\) on \(M=\{G=0\}\). Let \(h:W\to\R\)
+be smooth. At a constrained critical point of \(h+\ell\cdot z\), there
+is a unique \(\lambda\in\R^r\) such that
+\[
+ \nabla h(z)+\ell=DG(z)^T\lambda.
+\]
+Existence follows because the gradient annihilates the tangent space
+\(\ker DG(z)\); uniqueness follows from the injectivity of \(DG(z)^T\).
+
+Define
+\begin{equation}
+ K_\ell(z,\lambda)=
+ \begin{pmatrix}
+ G(z)\\
+ \nabla h(z)+\ell-DG(z)^T\lambda
+ \end{pmatrix}.
+ \label{eq:critical-general}
+\end{equation}
+There are \(r+q\) equations in \(q+r\) unknowns. At a zero set
+\[
+ A=DG(z),\qquad
+ H=D_z^2\!\left(h+\ell\cdot z-\sum_{i=1}^r\lambda_iG_i\right).
+\]
+Direct differentiation gives the square matrix
+\begin{equation}
+ D_{(z,\lambda)}K_\ell=
+ \begin{pmatrix}
+ A&0\\
+ H&-A^T
+ \end{pmatrix}.
+ \label{eq:border}
+\end{equation}
+
+\begin{lemma}[Regular multipliers and Morse critical points]
+\label{lem:border}
+The matrix \eqref{eq:border} is invertible if and only if the Hessian
+of \((h+\ell\cdot z)|_M\) at the critical point is nondegenerate.
+\end{lemma}
+
+\begin{proof}
+The constrained Hessian is the restriction of the symmetric bilinear
+form \(H\) to \(T_zM=\ker A\). This follows by differentiating the
+constraint along a local parametrization of \(M\): the second
+derivatives of the parametrization in the Hessian of \(h+\ell\cdot z\) are
+cancelled by the corresponding terms in
+\(\sum_i\lambda_iD^2G_i\).
+
+The kernel equations for \eqref{eq:border} are
+\[
+ Av=0,\qquad Hv=A^T\eta.
+\]
+If the restricted form is nondegenerate, testing the second equation
+against every \(w\in\ker A\) gives \(v=0\). Then \(A^T\eta=0\), so
+\(\eta=0\) because \(A\) has full row rank.
+
+Conversely, if the restricted form is degenerate, there is a nonzero
+\(v\in\ker A\) with \(w^THv=0\) for every \(w\in\ker A\). Hence
+\[
+ Hv\in(\ker A)^\perp=\im A^T.
+\]
+For some \(\eta\), \((v,\eta)\) is a nonzero kernel vector of
+\eqref{eq:border}. This proves the equivalence.
+\end{proof}
+
+\subsection{A common generic tilt for countably many manifolds}
+
+Here a function is \emph{Morse} when all its critical points are
+nondegenerate. Distinct critical points need not have distinct values.
+
+\begin{lemma}[Generic linear tilt]
+\label{lem:tilt}
+In the preceding setting, for almost every
+\(\ell\in\R^q\), the function \((h+\ell\cdot z)|_M\) is Morse.
+Consequently, for a countable collection of such pairs \((M_k,h_k)\)
+in the same ambient dimension \(q\), a single \(\ell\) can be chosen
+so that every \((h_k+\ell\cdot z)|_{M_k}\) is Morse.
+No bound on the number of components of \(M_k\) is required.
+\end{lemma}
+
+\begin{proof}
+The manifold \(M\times\R^r\) has dimension
+\((q-r)+r=q\). Consider the smooth map
+\[
+ L:M\times\R^r\longrightarrow\R^q,\qquad
+ L(z,\lambda)=DG(z)^T\lambda-\nabla h(z).
+\]
+Its fiber over \(\ell\) is precisely the critical-point system
+\eqref{eq:critical-general}. At such a point, for a tangent vector
+\((v,\eta)\) with \(Av=0\), its derivative is
+\[
+ DL(v,\eta)=-Hv+A^T\eta.
+\]
+Since source and target both have dimension \(q\), this derivative is
+surjective exactly when its kernel is zero. By Lemma~\ref{lem:border},
+that is exactly the nondegeneracy of the corresponding constrained
+critical point.
+
+Sard's theorem says that the critical values of \(L\) have Lebesgue
+measure zero. Thus every regular value \(\ell\) makes all constrained
+critical points nondegenerate. A value not in the image has no critical
+points and satisfies the assertion vacuously.
+
+The manifold is second countable: \(M\) is an embedded submanifold of
+an open Euclidean set. Sard can therefore be applied through a
+countable atlas even when there are infinitely many components.
+For a countable collection, take the complement of the union of its
+measure-zero bad sets. This complement has full measure, and any
+single \(\ell\) in it has all the required properties.
+\end{proof}
+
+The lemma only concerns nondegeneracy. The existence of a minimum on
+every component comes separately from Lemma~\ref{lem:proper}. Keeping
+these two roles distinct is essential on noncompact manifolds.
+
+\section{Square systems: induction on parameter dimension}
+\label{sec:square}
+
+\begin{lemma}[Monotonic parameter on a regular solution curve]
+\label{lem:curve}
+Suppose \(F(b,t,x)=0\) has \(n\) equations in \(x\in\R^n\), and
+\(F_x\) is invertible on its zero set. For a fixed \(b\), let
+\[
+ C_b=\{(t,x):(b,t,x)\in U,\ F(b,t,x)=0\}.
+\]
+Every connected component of \(C_b\) meets a slice \(t=t_0\) in at
+most one point.
+\end{lemma}
+
+\begin{proof}
+The full row rank of \(F_{(t,x)}\) makes \(C_b\) a one-dimensional
+embedded manifold without boundary. On its tangent space,
+\[
+ F_t\,dt+F_x\,dx=0.
+\]
+If \(dt=0\), then \(dx=0\); thus \(dt\) is nonzero on every nonzero
+tangent vector.
+
+A connected component is diffeomorphic to a circle or an open
+interval. The circle case is impossible, since the real-valued
+function \(t\) would attain a maximum and a minimum. In an interval
+coordinate, the derivative of \(t\) is continuous and never zero,
+so it has constant sign. Hence \(t\) is strictly monotone on the
+component, which proves the claim.
+\end{proof}
+
+\begin{proposition}[Uniform point bound for square systems]
+\label{prop:square}
+Theorem~\ref{thm:uniform} holds when \(m=n\).
+\end{proposition}
+
+\begin{proof}
+We induct on the number \(a\) of parameters. The induction statement
+is simultaneous for all unknown dimensions \(n\) and for all data
+satisfying the hypotheses. Increasing the number of unknowns in an
+auxiliary system is therefore harmless; the quantity that decreases
+is \(a\).
+
+If \(n=0\), every fiber is empty or the unique point of \(\R^0\), so
+the assertion is immediate. We may assume \(n\ge1\).
+
+For \(a=0\), invertibility of \(F_x\) makes every solution isolated.
+Property \(\AZ\), applied to the original system itself, gives the
+required finiteness.
+
+Assume the assertion proved for \(a-1\) parameters and every unknown
+dimension. Write \(p=(b,t)\) with \(b\in\R^{a-1}\). If no uniform
+bound existed, choose a sequence
+\begin{equation}
+ p_k=(b_k,t_k),\qquad \#M_{p_k}>k,\qquad k=1,2,\ldots.
+ \label{eq:witness-square}
+\end{equation}
+There is no requirement that the parameters or their \(b\)-coordinates
+be distinct. An infinite fiber can be used repeatedly. Equivalently,
+one may select \(k+1\) distinct points from each chosen fiber.
+
+For each \(k\), form the entire curve \(C_{b_k}\) of
+Lemma~\ref{lem:curve}, allowing \(t\) to vary over its original
+domain. That lemma implies that \(C_{b_k}\) has more than \(k\)
+components: two of the selected points at the same \(t_k\) cannot
+belong to the same curve component.
+
+Apply Lemma~\ref{lem:tilt} to the countable collection
+\[
+ \left(C_{b_k},\ \rho(b_k,\cdot)\right),
+ \qquad y=(t,x)\in\R^{n+1}.
+\]
+Choose one vector \(\ell\in\R^{n+1}\) that makes
+\(\rho(b_k,y)+\ell\cdot y\) Morse on every \(C_{b_k}\).
+This choice concerns each entire curve, even if it has infinitely
+many components. By Lemma~\ref{lem:proper}, each component has a
+minimum. Every such minimum is nondegenerate.
+
+With this single \(\ell\) fixed, define
+\begin{equation}
+ K(b,y,\lambda)=
+ \begin{pmatrix}
+ F(b,y)\\
+ \nabla_y\rho(b,y)+\ell-F_y(b,y)^T\lambda
+ \end{pmatrix},\qquad \lambda\in\R^n.
+ \label{eq:Ksquare}
+\end{equation}
+There are \(2n+1\) equations and \(2n+1\) unknowns
+\(z=(y,\lambda)\), but only \(a-1\) parameters \(b\).
+Let
+\[
+ \Delta(b,z)=\det D_zK(b,z),
+\]
+and use the open domain
+\begin{equation}
+ U_K=\{(b,t,x,\lambda):(b,t,x)\in U,\ \Delta(b,t,x,\lambda)\ne0\}.
+ \label{eq:Kdomain}
+\end{equation}
+Retain the original margins and add \(\Delta^2\) as a margin.
+
+We check the induction hypotheses rather than treating this as an
+automatic reduction.
+\begin{enumerate}[label=(\roman*),leftmargin=*]
+\item \(K\) is a finite system in the generated closure.
+The function \(\rho\) uses coordinates, sums, products, and inverses
+of the positive margins. Its gradient uses partial derivatives;
+the multiplier term uses additional coordinates and products.
+The determinant \(\Delta\) is a polynomial in derivatives of these
+expressions. The chosen \(\ell\) is a fixed real constant.
+\item The new domain is boundary-complete with its retained margins.
+This is Lemma~\ref{lem:inheritance}; in particular, a bounded sequence
+whose new margin \(\Delta^2\) has a positive lower bound cannot leave
+the regular Jacobian locus at its limit.
+\item Property \(\AZ\) is inherited for the \emph{whole closure} of
+this new system. Any later differentiation, inversion, multiplier
+construction, or specialization is still a finite descendant of
+the original system.
+\item \(D_zK\) is invertible on \(U_K\), by its definition.
+\end{enumerate}
+The induction hypothesis therefore gives a finite bound \(N_K\)
+on the number of solutions of \(K=0\) in \(U_K\), for every \(b\).
+
+At a minimum on \(C_{b_k}\), the multiplier exists and is unique.
+Lemma~\ref{lem:border} puts this solution in \(U_K\). Distinct
+components give distinct \(y\)'s and hence distinct \((y,\lambda)\)'s.
+Consequently the \(b_k\)-fiber of this \emph{one fixed} system has
+more than \(k\) points. Taking \(k>N_K\) contradicts the induction
+bound.
+\end{proof}
+
+\begin{remark}[No exceptional parameters are discarded]
+\label{rem:exceptional}
+The witness sequence in \eqref{eq:witness-square} is chosen before
+the tilt. Its members may lie entirely in a lower-dimensional or
+measure-zero parameter set. The common-tilt lemma treats those
+particular slices directly. Thus the argument does not assume that
+large fibers occur at generic parameters.
+\end{remark}
+
+\section{Positive-dimensional fibers}
+\label{sec:components}
+
+\begin{proof}[Proof of Theorem~\ref{thm:uniform}]
+The square case is Proposition~\ref{prop:square}. Assume \(m<n\),
+and suppose that no uniform component bound exists. Choose
+parameters \(p_k\) such that \(M_{p_k}\) has more than \(k\)
+connected components. Again repetitions are allowed.
+
+Each \(M_{p_k}\) is a smooth manifold of dimension \(n-m\).
+Lemma~\ref{lem:tilt}, with \(q=n\) and \(r=m\), provides a common
+\(\ell\in\R^n\) such that
+\[
+ x\longmapsto\rho(p_k,x)+\ell\cdot x
+\]
+is Morse on every witness fiber. Its minimum on each component
+exists by Lemma~\ref{lem:proper}.
+
+For all parameters \(p\), use the same square multiplier system
+\begin{equation}
+ J(p,x,\lambda)=
+ \begin{pmatrix}
+ F(p,x)\\
+ \nabla_x\rho(p,x)+\ell-F_x(p,x)^T\lambda
+ \end{pmatrix}=0,\qquad \lambda\in\R^m.
+ \label{eq:positive-dimensional}
+\end{equation}
+It has \(n+m\) equations in \(n+m\) unknowns \((x,\lambda)\).
+Restrict to
+\[
+ \det D_{(x,\lambda)}J\ne0
+\]
+and retain the square of this determinant as a positive margin.
+Exactly the checks in the proof of Proposition~\ref{prop:square}
+show that this is admissible open data with inherited property
+\(\AZ\). The square result, already proved for \emph{every}
+parameter dimension \(a\), gives a uniform point bound for this
+fixed system.
+
+Every component of each witness fiber supplies a nondegenerate
+minimum and therefore a solution in this regular locus.
+Distinct components supply distinct solutions. There are more than
+\(k\) such solutions at \(p_k\), a contradiction for large \(k\).
+If \(m=0\), the construction has no multiplier coordinates; it
+becomes \(\nabla_x\rho+\ell=0\), and the same proof applies.
+\end{proof}
+
+The two dimension reductions have different purposes. In the square
+case a parameter is turned into a curve variable, reducing the
+parameter count by one. For a positive-dimensional fiber, the
+multiplier equations first make the problem square at the
+\emph{same} parameter count. There is no circular invocation of the
+general component theorem.
+
+\section{Quantifiers and the scope of the conclusion}
+\label{sec:quantifiers}
+
+The following order is sufficient for the square-case contradiction:
+\[
+ \begin{gathered}
+ \text{assume unbounded fiber cardinalities}\\
+ \Longrightarrow\quad
+ \text{choose all witnesses }(b_k,t_k)\\
+ \Longrightarrow\
+ \text{choose one }\ell\text{ good for every witness curve}\\
+ \Longrightarrow\
+ \text{form one finite system }K_\ell\\
+ \Longrightarrow\
+ \text{obtain one finite }N_{K_\ell}\\
+ \Longrightarrow\
+ \text{choose }k>N_{K_\ell}.
+ \end{gathered}
+\]
+Although the chosen tilt can depend on the whole witness sequence,
+the system contains only the finitely many entries of that vector
+as constants. It does not contain the sequence as an infinite list
+of equations. The bound is permitted to depend on the tilt; it is
+still one fixed bound, contradicted by the infinitely many witnesses.
+
+\begin{center}
+\begin{tabular}{@{}p{0.57\linewidth}p{0.32\linewidth}@{}}
+\toprule
+Assertion & Role\\
+\midrule
+Each fixed finite descendant has finitely many isolated total solutions
+& Required hypothesis\\[3pt]
+A single bound for all descendants
+& Not required\\[3pt]
+One common tilt for countably many witness manifolds
+& Supplied by Sard and countable intersection\\[3pt]
+One common tilt good for every parameter value
+& Not required\\[3pt]
+A finite number of components before the tilt is chosen
+& Not required\\[3pt]
+All original open restrictions survive each construction
+& Required throughout\\[3pt]
+Uniform estimates over all derivative orders
+& Not required\\[3pt]
+An effective or computable component bound
+& Not supplied\\
+\bottomrule
+\end{tabular}
+\end{center}
+
+At every induction step the new expressions involve only finitely
+many derivatives. Parameter dimension decreases in the square
+induction, so only finitely many such steps occur. This finiteness
+does not weaken the universal closure assumption: one must know that
+\(\AZ\) applies to the particular, possibly complicated descendants
+created by those steps.
+
+\begin{corollary}[The conditional interface to a cycle-counting argument]
+\label{cor:interface}
+Suppose a separate argument supplies finitely many fixed admissible
+matching systems with property \(\AZ\), and represents every relevant
+orbit, apart from at most \(T\) exceptions, by a point in one of
+finitely many regular minor charts. Suppose also that distinct
+represented orbits cannot belong to the same connected component
+of a fiber in any one chart, at a parameter value common to the
+orbits being counted. Then the number of those orbits is bounded
+by \(T\) plus the sum of the component bounds of the charts.
+\end{corollary}
+
+\begin{proof}
+Apply Theorem~\ref{thm:uniform} separately to the finitely many
+charts. In one chart, different orbits occupy different components,
+so its component bound bounds the number of orbits represented
+there. Taking the union over charts can only overcount orbits.
+Finally add the \(T\) exceptions.
+\end{proof}
+
+This corollary exposes the remaining obligation in the source
+application. The existence of the finite matching description,
+regularity, separation of orbit representations into components,
+and property \(\AZ\) for \emph{every required finite descendant}
+are additional mathematical assertions. They are not consequences
+of Theorem~\ref{thm:uniform}. Nor does this note address the passage
+from hyperbolic cycles to arbitrary isolated cycles or the handling
+of the entire plane.
+
+\section{Two counterexamples delimiting the hypotheses}
+\label{sec:counterexamples}
+
+\subsection{A: no isolated total zeros, but unbounded finite fibers}
+\label{subsec:example-a}
+
+Let
+\[
+ U=\{(p,x):0<p<1,\ 0<x<1\},\qquad
+ F(p,x)=\sin(x/p).
+\]
+Take \(p\) as the parameter and \(x\) as the unknown. Use the complete
+margin list
+\[
+ p,\quad1-p,\quad x,\quad1-x.
+\]
+If these margins stay positively bounded below along a convergent
+sequence, its limit is still in \(U\). Thus the domain condition
+holds. The function is real analytic there, and at every zero,
+\[
+ x=k\pi p,\qquad k\ge1,\qquad
+ F_x(p,x)=\frac{(-1)^k}{p}\ne0.
+\]
+The fiber cardinality is
+\[
+ \#M_p=\#\{k\ge1:k\pi p<1\}
+       =\left\lceil\frac1{\pi p}\right\rceil-1,
+\]
+which is finite for every \(p>0\) and unbounded as \(p\downarrow0\).
+
+On the other hand, the total zero set has \emph{no isolated points}.
+Each of its points lies on one of the open analytic curve segments
+\[
+ \{(p,k\pi p):0<p<1/(k\pi)\}.
+\]
+Finiteness of the isolated points of this total set is therefore
+vacuously true.
+
+The full closure detects the failure. Append the polynomial equation
+\(x=1/2\). The resulting system has the infinitely many solutions
+\[
+ (p,x)=\left(\frac1{2\pi k},\frac12\right),
+ \qquad k=1,2,\ldots.
+\]
+They are isolated. Indeed, the Jacobian determinant of
+\((F,x-1/2)\) in \((p,x)\) is
+\[
+ F_p=-\frac{x}{p^2}\cos(x/p),
+\]
+which is nonzero at every displayed point. Thus property \(\AZ\)
+fails for one very simple descendant.
+
+This example preserves both the regularity and the boundary-complete
+domain hypotheses. It disproves replacing Definition~\ref{def:az}
+by finiteness of isolated points in the original total zero set,
+even if every original parameter fiber is separately known to be
+finite.
+
+\subsection{B: isolated-zero finiteness without boundary completeness}
+\label{subsec:example-b}
+
+Let
+\[
+ D=\bigcup_{k\ge1}(3^{-k},\,2\cdot3^{-k}),\qquad
+ U=D\times\R,\qquad F(x,y)=y.
+\]
+There are no parameters: \(a=0\), \(n=2\), and \(m=1\).
+Use only the constant margin \(g_1=1\).
+The derivative \(DF=(0,1)\) has row rank one everywhere. Its zero
+set is
+\[
+ M=D\times\{0\},
+\]
+which has infinitely many connected components.
+
+Nevertheless, this datum has property \(\AZ\) for the precise
+generated closure of Definition~\ref{def:closure}. To see this,
+start with the coordinates, \(F=y\), and \(g_1=1\). Every expression
+generated by finitely many sums, products, partial derivatives,
+additional coordinates, fixed real constants, and permitted
+inverses is a rational function of the full coordinate tuple.
+This follows inductively; in particular, a partial derivative of
+a rational function is rational.
+
+Take any fixed finite descendant. Clear its finitely many
+denominators while retaining their nonzero restrictions. Its
+equations become finitely many polynomial equations. Its permitted
+domain is an open subset of the full Euclidean coordinate space:
+it retains the original restriction \(x\in D\) and any finitely
+many additional strict restrictions. Fixing a coordinate can be
+represented by an additional polynomial equation.
+
+If a solution is isolated after restricting that algebraic zero
+set to this open domain, it is already an isolated point of the
+algebraic zero set itself. In fact, a sufficiently small ball
+about the point is contained in the domain, so any arbitrarily
+nearby algebraic solutions would also be solutions of the
+restricted system. A real algebraic set has finitely many
+connected components, hence finitely many isolated points.
+It follows that every such descendant has finitely many isolated
+solutions. This verifies \(\AZ\), despite the infinitely many
+components of \(M\).
+
+The missing hypothesis is boundary completeness. For any fixed
+\(k\), approach \(3^{-k}\) from inside
+\((3^{-k},2\cdot3^{-k})\), keeping \(y=0\). The sequence is bounded
+and the margin is always one, but its limit is outside \(U\).
+The proposed barrier is
+\[
+ \rho(x,y)=2+x^2+y^2.
+\]
+On each component of \(M\), it has infimum \(2+3^{-2k}\) but no
+minimum. Lemma~\ref{lem:proper} therefore fails exactly where the
+counting argument needs it.
+
+The restriction to the \emph{generated} closure matters in this
+example. We have not claimed finiteness after adjoining arbitrary
+new analytic functions on \(U\). Such an operation is absent from
+Definition~\ref{def:closure}. The example shows that even the full
+stated algebraic and differential closure cannot compensate for
+an arbitrary open domain whose boundary is not recorded by its
+margins.
+
+\section{Review checkpoints and source comparison}
+\label{sec:review}
+
+A referee can check the conditional implication in the following
+order:
+\begin{enumerate}[leftmargin=*]
+\item Verify that the domain condition makes the inverse-margin
+barrier proper; inspect Lemma~\ref{lem:proper} and Example B.
+\item Verify the square critical-point Jacobian
+\eqref{eq:border}, including the uniqueness of multipliers.
+\item Apply Sard to the map \(L\) in Lemma~\ref{lem:tilt}; check
+that its source and target both have dimension \(q\).
+\item Verify that \(t\) is globally injective on every solution-curve
+component in Lemma~\ref{lem:curve}; local graph existence alone
+would not justify that conclusion.
+\item Follow the witness sequence through \eqref{eq:Ksquare}.
+The critical system must be a single fixed system with \(a-1\)
+parameters, not one separately chosen system for each \(k\).
+\item Check all inherited margins and equations before using the
+induction hypothesis.
+\item Reduce general fibers to the square system
+\eqref{eq:positive-dimensional}, at the unchanged parameter
+dimension.
+\end{enumerate}
+
+\begin{center}
+\begin{tabular}{@{}p{0.40\linewidth}p{0.49\linewidth}@{}}
+\toprule
+Pinned source, Section 11 & Exposition in this note\\
+\midrule
+Definition 11.1; lines 22--56
+& Definitions \ref{def:data}--\ref{def:az}\\[3pt]
+Proper function; lines 88--105
+& Lemma \ref{lem:proper}\\[3pt]
+Curve injectivity; lines 112--124
+& Lemma \ref{lem:curve}\\[3pt]
+Generic critical system; lines 126--159
+& Lemmas \ref{lem:border} and \ref{lem:tilt}\\[3pt]
+Parameter induction; lines 161--185
+& Proposition \ref{prop:square}, using countable witnesses\\[3pt]
+General fibers; lines 187--203
+& Section \ref{sec:components}\\[3pt]
+Closure warning; lines 207--216
+& Section \ref{sec:quantifiers} and Example A\\
+\bottomrule
+\end{tabular}
+\end{center}
+
+The original proof's almost-everywhere parameter argument and its
+implicit-function extension to exceptional parameters are not used
+here. This alternate organization does not relax the substantive
+closure hypothesis. A future audit of the full manuscript must
+establish that hypothesis for the actual flow-passage systems and
+their generated descendants, with their true open domains.
+
+\begin{thebibliography}{9}
+
+\bibitem{OpenAI}
+OpenAI.
+\emph{Uniform bounds for planar polynomial limit cycles}.
+OpenAI Math Release preprint, manuscript dated 24 September 2026.
+Section 11, Definition 11.1 and Theorem 11.2.
+Repository revision \sourcecommit.
+\href{https://github.com/openai/math/tree/4eaee87548250b2682affda7d05d947c05554bae/preprints/uniform-bounds-for-planar-polynomial-limit-cycles-September-24-2026}{Pinned manuscript directory}.
+
+\bibitem{Sard}
+Arthur Sard.
+The measure of the critical values of differentiable maps.
+\emph{Bulletin of the American Mathematical Society}
+48 (1942), 883--890.
+\href{https://doi.org/10.1090/S0002-9904-1942-07811-6}{doi:10.1090/S0002-9904-1942-07811-6}.
+
+\bibitem{Lee}
+John M. Lee.
+\emph{Introduction to Smooth Manifolds}.
+Second edition, Springer, 2013.
+Background for regular level sets, Sard's theorem, and smooth
+manifolds; no specific theorem number is used here.
+
+\bibitem{BCR}
+Jacek Bochnak, Michel Coste, and Marie-Fran\c{c}oise Roy.
+\emph{Real Algebraic Geometry}.
+Springer, 1998.
+Background for finiteness of the connected components of a
+semialgebraic set, used only in Example B.
+
+\end{thebibliography}
+\end{document}
